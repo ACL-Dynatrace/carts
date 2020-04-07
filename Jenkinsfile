@@ -133,35 +133,35 @@ pipeline {
         }
       }
     }
-    stage('Run functional check in dev') {
-      when {
-        expression {
-          return env.BRANCH_NAME ==~ 'release/.*' || env.BRANCH_NAME ==~'master'
-        }
-      }
-      steps {
-        container('jmeter') {
-          script {
-            def status = executeJMeter (
-              scriptName: "jmeter/${env.APP_NAME}_load.jmx", 
-              resultsDir: "FuncCheck_${env.APP_NAME}_dev_${env.VERSION}_${BUILD_NUMBER}",
-              serverUrl: "${env.APP_NAME}.dev", 
-              serverPort: 80,
-              checkPath: '/health',
-              vuCount: 1,
-              loopCount: 1,
-              LTN: "FuncCheck_${BUILD_NUMBER}",
-              funcValidation: true,
-              avgRtValidation: 0
-            )
-            if (status != 0) {
-              currentBuild.result = 'FAILED'
-              error "Functional check in dev failed."
-            }
-          }
-        }
-      }
-    }
+   // stage('Run functional check in dev') {
+    //  when {
+    //    expression {
+     //     return env.BRANCH_NAME ==~ 'release/.*' || env.BRANCH_NAME ==~'master'
+      //  }
+     // }
+      //steps {
+       // container('jmeter') {
+        //  script {
+        //    def status = executeJMeter (
+         //     scriptName: "jmeter/${env.APP_NAME}_load.jmx", 
+          //    resultsDir: "FuncCheck_${env.APP_NAME}_dev_${env.VERSION}_${BUILD_NUMBER}",
+           //   serverUrl: "${env.APP_NAME}.dev", 
+            //  serverPort: 80,
+             // checkPath: '/health',
+             // vuCount: 1,
+             // loopCount: 1,
+             // LTN: "FuncCheck_${BUILD_NUMBER}",
+             // funcValidation: true,
+             // avgRtValidation: 0
+           // )
+          //  if (status != 0) {
+         //     currentBuild.result = 'FAILED'
+        //      error "Functional check in dev failed."
+       //     }
+      //    }
+     //   }
+    //  }
+   // }
     stage('Mark artifact for staging namespace') {
       when {
         expression {
